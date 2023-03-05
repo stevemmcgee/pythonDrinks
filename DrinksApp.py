@@ -3,7 +3,7 @@ import requests
 import tkinter as tk
 from tkinter import ttk
 
-
+rowNum =0 
 
 class ScrollableFrame(tk.Frame):
     def __init__(self, container, *args, **kwargs):
@@ -35,27 +35,20 @@ def on_button_click(button):
         entry.pack(side="left", fill="x", expand=True)
     
     elif button == button3:
-        pass
-        '''
-        button5 = tk.Button(row2_frame, text={button['text']},padx=100, command=lambda: call_drink(varinput.get()))
-        entry = tk.Entry(row2_frame)
+        
+        button5 = tk.Button(row2_frame, text=button['text'], command=lambda: api_drink_first_letter(varinput.get()))
+        entry = tk.Entry(row2_frame,textvariable=varinput)
 
         button5.pack(side="left")
         entry.pack(side="left", fill="x", expand=True)
-        '''
+        
     else:
-        pass
-        '''
-        button5 = tk.Button(row2_frame, text={button['text']},padx=100, command=lambda: call_drink(varinput.get()))
-        entry = tk.Entry(row2_frame)
+        button5 = tk.Button(row2_frame, text=button['text'], command=lambda: api_search_ingredient(varinput.get()))
+        entry = tk.Entry(row2_frame,textvariable=varinput)
 
         button5.pack(side="left")
         entry.pack(side="left", fill="x", expand=True)
-        '''
-        
-        
-
-        
+ 
     
 def api_random():
     response = requests.get("https://www.thecocktaildb.com/api/json/v1/1/random.php")
@@ -73,13 +66,14 @@ def api_drink_first_letter(letter):
     response =requests.get("https://www.thecocktaildb.com/api/json/v1/1/search.php?f="+letter)
     data = response.json()
     #print('Response:',response, sep=' ')
-    return data
+    clear_frame()
+    displayDrink(data)
 
 def api_search_ingredient(ingredient):
     response =requests.get("https://www.thecocktaildb.com/api/json/v1/1/filter.php?i="+ingredient)
     data = response.json()
     #print('Response:',response, sep=' ')
-    return data
+    processIngredient(data)
 
 def api_drink_by_id(id):
     #print('Id ',id)
