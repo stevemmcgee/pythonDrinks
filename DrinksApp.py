@@ -1,5 +1,6 @@
 import json
 import requests
+from urlImageFrame import ImageFrame
 import tkinter as tk
 from tkinter import ttk
 
@@ -108,8 +109,8 @@ def clear_frame():
     
 
 def displayDrink(data):
-    x=1  
-    #print("\nYour Drink\n")
+    x=1 
+        #print("\nYour Drink\n")
     for i in data['drinks']:
         global rowNum
         #print("Id:", i['idDrink'])
@@ -131,6 +132,9 @@ def displayDrink(data):
         glass2Label=tk.Label(inner_frame,text=i['strGlass']).grid(row=rowNum,column=1)
         rowNum+=1
         print(rowNum)
+        iframe = ImageFrame(inner_frame, i['strDrinkThumb']+'/preview')
+        iframe.grid(row=rowNum, column=0)
+        rowNum+=1
         space1=tk.Label(inner_frame,text="   ").grid(row=rowNum,column=0)
         rowNum+=1
         print(rowNum)
@@ -167,7 +171,7 @@ def row_reset():
     
 
 root = tk.Tk()
-root.geometry("400x400")
+root.geometry("450x600")
 
 # Row 1
 row1_frame = tk.Frame(root)
