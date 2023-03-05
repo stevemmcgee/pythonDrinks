@@ -3,7 +3,7 @@ import requests
 import tkinter as tk
 from tkinter import ttk
 
-rowNum =0 
+rowNum= 0
 
 class ScrollableFrame(tk.Frame):
     def __init__(self, container, *args, **kwargs):
@@ -24,6 +24,7 @@ class ScrollableFrame(tk.Frame):
 
 def on_button_click(button):
     varinput=tk.StringVar()
+    clear_frame()
     print(f"You clicked {button['text']} button")
     if button == button1:
         randomClick()
@@ -66,7 +67,6 @@ def api_drink_first_letter(letter):
     response =requests.get("https://www.thecocktaildb.com/api/json/v1/1/search.php?f="+letter)
     data = response.json()
     #print('Response:',response, sep=' ')
-    clear_frame()
     displayDrink(data)
 
 def api_search_ingredient(ingredient):
@@ -84,13 +84,12 @@ def api_drink_by_id(id):
     
 
 def processIngredient(data):
-    
+    row_reset()
     for i in data['drinks']:
         api_drink_by_id(i['idDrink'])
 
 def randomClick():
     data = api_random()
-    clear_frame()
     displayDrink(data)
     
     
@@ -98,56 +97,74 @@ def call_drink(name):
     #print(name)
     data = api_drink_name(name)
     #print(data)
-    clear_frame()
     displayDrink(data)
     
 def clear_frame():
+    row_reset()
     for widget in inner_frame.winfo_children():
         widget.destroy()
     for widget in row2_frame.winfo_children():
         widget.destroy()
+    
 
 def displayDrink(data):
-    x=1 
-    rowNum =2 
+    x=1  
     #print("\nYour Drink\n")
     for i in data['drinks']:
-        
+        global rowNum
         #print("Id:", i['idDrink'])
-        name=tk.Label(inner_frame,text="Name:").grid(row=rowNum,column=0,)            
-        name=tk.Label(inner_frame,text=i['strDrink']).grid(row=rowNum,column=1,)
         rowNum+=1
-        categoryLabel=tk.Label(inner_frame,text="Category:").grid(row=rowNum,column=0,)
-        category2Label=tk.Label(inner_frame,text=i['strCategory']).grid(row=rowNum,column=1,)
+        print(rowNum)
+        name=tk.Label(inner_frame,text="Name:").grid(row=rowNum,column=0)            
+        name=tk.Label(inner_frame,text=i['strDrink']).grid(row=rowNum,column=1)
         rowNum+=1
-        alcoholicLabel=tk.Label(inner_frame,text="Alcoholic:").grid(row=rowNum,column=0,)
-        alcoholic2Label=tk.Label(inner_frame,text=i['strAlcoholic'],padx=15).grid(row=3,column=1,)
+        print(rowNum)
+        categoryLabel=tk.Label(inner_frame,text="Category:").grid(row=rowNum,column=0)
+        category2Label=tk.Label(inner_frame,text=i['strCategory']).grid(row=rowNum,column=1)
         rowNum+=1
-        glassLabel=tk.Label(inner_frame,text="Glass:").grid(row=rowNum,column=0,)
-        glass2Label=tk.Label(inner_frame,text=i['strGlass']).grid(row=rowNum,column=1,)
-        rowNum+=1 
-        space1=tk.Label(inner_frame,text="   ").grid(row=rowNum,column=0,)
-        rowNum+=1 
-        ingredientsLabel=tk.Label(inner_frame,text='Ingredients:').grid(row=rowNum,column=0,) 
+        print(rowNum)
+        alcoholicLabel=tk.Label(inner_frame,text="Alcoholic:").grid(row=rowNum,column=0)
+        alcoholic2Label=tk.Label(inner_frame,text=i['strAlcoholic'],padx=15).grid(row=3,column=1)
         rowNum+=1
+        print(rowNum)
+        glassLabel=tk.Label(inner_frame,text="Glass:").grid(row=rowNum,column=0)
+        glass2Label=tk.Label(inner_frame,text=i['strGlass']).grid(row=rowNum,column=1)
+        rowNum+=1
+        print(rowNum)
+        space1=tk.Label(inner_frame,text="   ").grid(row=rowNum,column=0)
+        rowNum+=1
+        print(rowNum)
+        ingredientsLabel=tk.Label(inner_frame,text='Ingredients:').grid(row=rowNum,column=0) 
+        rowNum+=1
+        print(rowNum)
         
         
         while x < 16: 
             if i['strIngredient'+str(x)] is not None:
-                ingredient=tk.Label(inner_frame,text=i['strIngredient'+str(x)]).grid(row=rowNum,column=0,)
-                measure=tk.Label(inner_frame,text=i['strMeasure'+str(x)]).grid(row=rowNum,column=1,)
+                ingredient=tk.Label(inner_frame,text=i['strIngredient'+str(x)]).grid(row=rowNum,column=0)
+                measure=tk.Label(inner_frame,text=i['strMeasure'+str(x)]).grid(row=rowNum,column=1)
                 rowNum+=1
+                print(rowNum)
             x=x+1
         
         if i['strInstructions'] is not None:
-            space2=tk.Label(inner_frame,text="   ").grid(row=rowNum,column=0,) 
+            space2=tk.Label(inner_frame,text="   ").grid(row=rowNum,column=0) 
             rowNum+=1
-            measure=tk.Label(inner_frame,text="Instructions:").grid(row=rowNum,column=0,)
+            print(rowNum)
+            measure=tk.Label(inner_frame,text="Instructions:").grid(row=rowNum,column=0)
             rowNum+=1
-            measure=tk.Label(inner_frame,text= i['strInstructions'],wraplength=220).grid(row=rowNum,column=0,)
+            print(rowNum)
+            measure=tk.Label(inner_frame,text= i['strInstructions'],wraplength=220).grid(row=rowNum,column=0)
+            rowNum+=1
             
-        brLine=tk.Label(inner_frame,text='   ').grid(row=x+11,column=0,)
+        brLine=tk.Label(inner_frame,text="*********************************************************").grid(row=rowNum,column=0,columnspan=2)
         rowNum+=2
+        print(rowNum)
+         
+def row_reset():
+    global rowNum
+    rowNum = 0
+    
 
 root = tk.Tk()
 root.geometry("400x400")
@@ -179,6 +196,8 @@ scrollable_frame.pack(side="top", fill="both", expand=True)
 
 inner_frame= tk.Frame(scrollable_frame.scrollable_frame)
 inner_frame.pack(expand=True)
+
+
 
 
 
