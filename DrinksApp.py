@@ -3,22 +3,28 @@ from tkinter import *
 from tkinter import ttk
 import requests
 
-
 root = Tk()
 root.title('Drink DB')
 root.geometry('1200x400')
 
 # Create a main frame
 frame = LabelFrame(root,padx=250,pady=10)
-frame.grid(row=3, column=0, columnspan =4)
+frame.pack(side=BOTTOM,fill=BOTH, expand=1)
+
+randomBtn = Button(frame, text='Random Drink',command=lambda: randomClick()).grid(row=0, column =0)
+nameBtn = Button(frame, text='Drink by Name',command=lambda: nameClick()).grid(row=0, column =1)
+letterBtn = Button(frame, text='Drink by First Letter',command=lambda: call_drink()).grid(row=0, column =2)
+ingredientBtn = Button(frame, text='Drink by Ingredient',command=lambda: api_drink_first_letter()).grid(row=0, column =3)
+
+
 
 # Create a canvas
 app_canvas = Canvas(frame)
-app_canvas.pack(side= LEFT, fill=BOTH, expand=1)
+app_canvas.grid(row=2, column =0, columnspan=4)
 
 # Add a Scroll bar
 v_scroll=ttk.Scrollbar(frame, orient=VERTICAL, command=app_canvas.yview)
-v_scroll.pack(side=RIGHT, fill=Y)
+v_scroll.grid(row=2, column =4)
 
 # configure the canvas
 app_canvas.configure(yscrollcommand=v_scroll.set)
@@ -33,10 +39,7 @@ app_canvas.create_window((0,0), window=inner_frame, anchor='nw')
 
 #v = Scrollbar(root, orient=VERTICAL)
 #v.grid(row=3,column=2,sticky='ns')
-randomBtn = Button(root, text='Random Drink',padx=100,command=lambda: randomClick()).grid(row=0, column=0,sticky=W)
-nameBtn = Button(root, text='Drink by Name', padx=100,command=lambda: nameClick()).grid(row=0, column=1,sticky=W)
-letterBtn = Button(root, text='Drink by First Letter', padx=100,command=lambda: call_drink()).grid(row=0, column=2)
-ingredientBtn = Button(root, text='Drink by Ingredient', padx=100,command=lambda: api_drink_first_letter()).grid(row=0, column=3)
+
 
 varinput=StringVar()
 
@@ -85,9 +88,9 @@ def randomClick():
     
 def nameClick():
     #varinput.get()
-    nameLabel1=Label(root, text="Drink Name",justify=LEFT).grid(row=1,column=0,sticky=W)
-    nameInput=Entry(root,textvariable=varinput,justify=LEFT,width=47).grid(row=1,column=1,columnspan=4,sticky=W)
-    buttonDrink = Button(root, text="Get My Drink", command=lambda: call_drink(varinput.get())).grid(row=1, column=2,sticky=W)
+    nameLabel1=Label(frame, text="Drink Name",justify=LEFT).grid(row=1,column=0,sticky=W)
+    nameInput=Entry(frame,textvariable=varinput,justify=LEFT,width=47).grid(row=1,column=1,columnspan=4,sticky=W)
+    buttonDrink = Button(frame, text="Get My Drink", command=lambda: call_drink(varinput.get())).grid(row=1, column=4,sticky=W)
     
 def call_drink(name):
     print(name)
@@ -97,8 +100,10 @@ def call_drink(name):
     displayDrink(data)
     
 def clear_frame():
-    for widget in frame.winfo_children():
-        widget.destroy()
+    exists=inner_frame.winfo_exists()
+    if exists == 1:
+        for widget in inner_frame.winfo_children():
+            widget.destroy()
         
     
 
