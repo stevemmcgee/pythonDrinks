@@ -25,7 +25,7 @@ class OpenPoseData:
             if file_name.endswith('.json'):
                 with open(os.path.join(self.directory, file_name), 'r') as f:
                     json_data = json.load(f)
-                    print(json_data)
+                    #print(json_data)
                     for person in json_data['people']:
                         keypoint_data = person['pose_keypoints_2d']
                         for i in range(len(keypoint_data)):
@@ -37,7 +37,7 @@ class OpenPoseData:
                                     #print(data[keypoint])
                                     
                                 data[keypoint]=(keypoint_data[i], keypoint_data[i+1])
-                                print(keypoint,data[keypoint], sep=': ' )
+                                #print(keypoint,data[keypoint], sep=': ' )
                                 #print(file_name)
                                 file_name.split('_')
                                 #time.sleep(1)
@@ -47,5 +47,5 @@ class OpenPoseData:
             list_of_dicts[file_name.split('_')[0] +' '+ str(file_count)]=data
             file_count+=1   
             
-        print(list_of_dicts)         
+        #print(list_of_dicts)         
         return list_of_dicts
